@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Trang chủ - {{ block.super }}
+{% endblock %}
+
+{% block page-title %}
+  <div class="page-title d-flex">
+    <h4><i class="icon-home mr-2"></i> <span class="font-weight-semibold">Bảng tin</span></h4>
+  </div>
+{% endblock %}
+
+{% block breadcrumb %}
+  <div class="d-flex">
+    <div class="breadcrumb">
+      <span class="breadcrumb-item active"><i class="icon-home2 mr-2"></i> Trang chủ</span>
+    </div>
+  </div>
+{% endblock %}
+
+{% block content %}
+  <div class="card">
+
+  </div>
+{% endblock %}
+
+{% block inline-script %}
+  <script>
+      $(document).ready(function () {
+      });
+  </script>
+{% endblock %}

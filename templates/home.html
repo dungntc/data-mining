@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>Data Mining</title>
+</head>
+<body>
+<div class="container">
+    <div class="card col-10 offset-1 pt-2" style="margin-top:50px">
+        <h4><b>Line </b><b id="line">10</b><b>  __________ Gán nhãn đúng để lấy 1 triệu :D</b></h4>
+        <h6 id="number"></h6>
+        <p class="pt-1" ><b>Content : </b></p>
+        <p class="pl-2" id="content" ></p>
+    </div>
+    <div class="card col-10 offset-1" style="margin-top:20px">
+        <div>
+            Các nhãn :
+        </div>
+        <div class="row p-2">
+            <div class="col-6 ">
+                <b> Nhãn 1 </b>
+                <div class= "op" id = "option1"> </div>
+            </div>
+            <div class="col-6 ">
+                <b> Nhãn 2 </b>
+                <div class= "op" id = "option2"> </div>
+            </div>
+        </div>
+        <div class="row p-2">
+            <div class="col-6 " >
+                <b> Nhãn 3 </b>
+                <div class= "op" id = "option3"> </div>
+            </div>
+            <div class="col-6" >
+                <b> Nhãn 4 </b>
+                <div class= "op" id = "option4"> </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card col-10 offset-1" style="margin-top:20px">
+        <div>
+            Lựa chọn kết quả :
+        </div>
+        <select class="selectpicker m-3 col-6" id="result" data-live-search="true">
+            <option value ="__label__Nha_dat">__label__Nha_dat</option>
+            <option value ="__label__Do_an_va_do_uong">__label__Do_an_va_do_uong</option>
+            <option value ="__label__Kinh_doanh_va_Cong_nghiep">__label__Kinh_doanh_va_Cong_nghiep</option>
+            <option value ="__label__Tai_chinh">__label__Tai_chinh</option>
+            <option value ="__label__Mua_sam">__label__Mua_sam</option>
+            <option value ="__label__Du_lich">__label__Du_lich</option>
+            <option value ="__label__Chinh_tri">__label__Chinh_tri</option>
+            <option value ="__label__Giao_duc">__label__Giao_duc</option>
+            <option value ="__label__Nghe_thuat">__label__Nghe_thuat</option>
+            <option value ="__label__Mang_internet_va_vien_thong">__label__Mang_internet_va_vien_thong</option>
+            <option value ="__label__Sach">__label__Sach</option>
+            <option value ="__label__Con_nguoi_va_xa_hoi">__label__Con_nguoi_va_xa_hoi</option>
+            <option value ="__label__Lam_dep_va_the_hinh">__label__Lam_dep_va_the_hinh</option>
+            <option value ="__label__Nha_va_vuon">__label__Nha_va_vuon</option>
+            <option value ="__label__Giai_tri">__label__Giai_tri</option>
+            <option value ="__label__May_tinh_va_thiet_bi_dien_tu">__label__May_tinh_va_thiet_bi_dien_tu</option>
+            <option value ="__label__Suc_khoe_va_benh_tat">__label__Suc_khoe_va_benh_tat</option>
+            <option value ="__label__Khoa_hoc">__label__Khoa_hoc</option>
+            <option value ="__label__Thoi_quen_va_so_thich">__label__Thoi_quen_va_so_thich</option>
+            <option value ="__label__Phap_luat">__label__Phap_luat</option>
+            <option value ="__label__Giao_thong">__label__Giao_thong</option>
+            <option value ="__label__The_thao">__label__The_thao</option>
+            <option value ="__label__Cong_nghe_moi">__label__Cong_nghe_moi</option>
+        </select>
+    </div>
+    <div class="pt-5">
+            <div class="offset-8 col-4">
+                <button id="button">Dán nhãn cho bài viết</button>
+            </div>
+    </div>
+</div>
+<style>
+#button {
+  background-color:blue;
+  color:white;
+}
+.op { background-color: #FFFFFF;  color: #000000; cursor: pointer;}
+.op:hover { background-color: blue; ;  color: #FFFFFF;}
+</style>
+<script>
+    $(document).ready(function () {
+        var loadData = function(){
+            $.get('/api/get-all/', {}, function (response) {
+                result = response ;
+                $('#number').text("Còn lại "+result.bad+"/" +result.all+" nhãn");
+            })
+            $.get('/api/get-one/', {}, function (response) {
+                result = response.result ;
+                $('#line').text(result.line);
+                $('#option1').text(result.option1);
+                $('#option2').text(result.option2);
+                $('#option3').text(result.option3);
+                $('#option4').text(result.option4);
+                $('#content').text(result.content);
+            })
+        }
+        loadData()
+        $(".op").click(function(event){
+            document.getElementById("result").value =  $('#'+event.target.id).text();
+        });
+        $("#button").click(function(event){
+            $.get('/api/get-one/', {}, function (response) {
+                result = response.result ;
+                $('#option1').text(result.option1);
+                $('#option2').text(result.option2);
+                $('#option3').text(result.option3);
+                $('#option4').text(result.option4);
+            })
+            loadData()
+        });
+    })
+</script>
+</body>
+</html>
