@@ -73,3 +73,34 @@ def runCommand(request):
         'data': 'oke',
         'status': True
     }, status=200)
+
+@api_view(['GET'])
+def runSelect3(request):
+    bad_label = Label.objects.all().filter(is_good=0)
+    print(len(bad_label))
+    for label in bad_label:
+        if label.option1 == label.option2 and label.option1 == label.option3:
+            label.result = label.option1
+            label.is_good = 1
+            label.save()
+
+        if label.option1 == label.option2 and label.option1 == label.option4:
+            label.result = label.option1
+            label.is_good = 1
+            label.save()
+
+        if label.option1 == label.option3 and label.option1==label.option4:
+            label.result = label.option1
+            label.is_good = 1
+            label.save()
+
+        if label.option3 == label.option2 and label.option2==label.option4:
+            label.result = label.option2
+            label.is_good = 1
+            label.save()
+
+    return JsonResponse({
+        'data': 'oke',
+        'status': True
+    }, status=200)
+
