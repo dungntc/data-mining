@@ -107,14 +107,22 @@
             document.getElementById("result").value =  $('#'+event.target.id).text();
         });
         $("#button").click(function(event){
-            $.get('/api/get-one/', {}, function (response) {
-                result = response.result ;
-                $('#option1').text(result.option1);
-                $('#option2').text(result.option2);
-                $('#option3').text(result.option3);
-                $('#option4').text(result.option4);
-            })
-            loadData()
+            $.ajax({
+                url: '/api/update',
+                type: 'post',
+                dataType: 'json',
+                contentType: 'application/json',
+                success: function (data) {
+                   loadData()
+                },
+                error : function(){
+                    alert("có lỗi")
+                },
+                data: JSON.stringify({
+                    line : $('#line').text(),
+                    result: document.getElementById("result").value
+                })
+            });
         });
     })
 </script>

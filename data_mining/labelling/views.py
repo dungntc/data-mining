@@ -3,8 +3,8 @@ from rest_framework.decorators import api_view
 from django.template.response import TemplateResponse
 from data_mining.labelling.models import Label
 from random import randint
-from django.db.models.aggregates import Count
 from data_mining.labelling.management.commands import run
+import json
 
 def home(request):
     return TemplateResponse(request, 'home.html')
@@ -38,6 +38,25 @@ def getOneLabel(request):
         },
         'status': True
     }, safe=False, json_dumps_params={'ensure_ascii': False}, status =200)
+
+@api_view(['POST'])
+def update(request):
+    data_body =json.loads(request.body.decode('utf-8'))
+    line = data_body.get('line', None)
+    result = data_body.get('result', None)
+    if line is None and result is None:
+        return JsonResponse({
+            'data': 'Value is None',
+            'status': False
+        }, status=400)
+    label = Label.objects.all().filter(line=line)[0]
+    label.is_good = 1
+    label.result =result
+    label.save()
+    return JsonResponse({
+        'data': 'OK',
+        'status': True
+    }, status= 200)
 
 @api_view(['GET'])
 def runCommand(request):
